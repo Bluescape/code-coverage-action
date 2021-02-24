@@ -37,7 +37,7 @@ jobs:
         run: |
           npm install
       - name: Run Jest Tests
-        uses: bluescape/code-coverage-action@v0.0.1
+        uses: bluescape/code-coverage-action@v0.0.2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           coverage-command: "npm run test -- --coverage"
