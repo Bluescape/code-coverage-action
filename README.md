@@ -2,7 +2,8 @@
 This GitHub Action runs unit tests and comments on the PR with a markdown table of the code coverage.
 
 ## Currently Supported Test Tools
-- Jest
+- `jest`
+- `mocha` using `nyc`
 
 ## Usage
 ### Pre-requisites
