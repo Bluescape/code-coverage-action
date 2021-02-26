@@ -1,8 +1,6 @@
 name: Jest Check
 
 on:
-  push:
-    branches: [develop]
   pull_request:
     branches: [develop]
 
@@ -22,8 +20,15 @@ jobs:
       - name: npm install
         run: |
           npm install
-      - name: Run Jest Tests
+      - name: Test PR Comment and Upload
         uses: ./
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           coverage-command: 'npm run test -- --coverage'
+          coverage-output: "./coverage/coverage-summary.json"
+          comment: true
+          upload: true
+          upload-tag: "code-coverage-action"
+          influx-host: ${{ secrets.INFLUX_HOST }}
+          influx-username: admin
+          influx-password: ${{ secrets.INFLUX_ALPHA}}

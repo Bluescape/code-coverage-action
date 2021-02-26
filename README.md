@@ -14,34 +14,31 @@ Create a workflow `.yml` file in your `.github/workflows` directory. An [example
 - `comment-title`: The summary title of the comment posted on the PR, defaults to ''Unit Test Coverage Report'
 - `working-dir`: The directory to execute the command in. Note, using `cd` in side the coverage-command will cause issues.
 
-## Example Workflow
-On every pull request created against develop, run unit tests.
+## Example Workflows
+### Commenting on a Pull Request
 ```yaml
-name: Jest Preflight Check
-
-on:
-  pull_request:
-    branches: [develop]
-
-jobs:
-  build:
-    name: jest_preflight
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14.x
-      - name: npm install
-        run: |
-          npm install
-      - name: Run Jest Tests
-        uses: bluescape/code-coverage-action@v0.0.2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          coverage-command: "npm run test -- --coverage"
-          comment-title: "Source Unit Test Coverage Report"
-          working-dir: "test/e2e/page_objects"
+  - name: Comment Coverage on the PR
+    uses: bluescape/code-coverage-action@v0.0.3
+    with:
+      token: ${{ secrets.GITHUB_TOKEN }}
+      coverage-command: "npm run test -- --coverage"
+      comment: true
+      comment-title: "Source Unit Test Coverage Report"
+      working-dir: "test/e2e/page_objects"
 ```
-This will run checkout the branch, navigate to `test/e2e/page_objects` and run the command `npm run test -- --coverage`, then parse the output of the code coverage and post it back to the PR that triggered it.
+This will navigate to `test/e2e/page_objects` and run the command `npm run test -- --coverage`, then parse the output of the code coverage and post it back to the PR that triggered it.
+
+### Uploading to an InfluxDB
+```yaml
+  - name: Test PR Comment and Upload
+    uses: bluescape/code-coverage-action@v0.0.3
+    with:
+      token: ${{ secrets.GITHUB_TOKEN }}
+      coverage-command: 'npm run test -- --coverage'
+      coverage-output: "./coverage/coverage-summary.json" # This requires the json-summary coverage reporter
+      upload: true
+      upload-tag: "code-coverage-action"
+      influx-host: ${{ secrets.INFLUX_HOST }} # The url of the host where the influxdb is
+      influx-username: admin
+      influx-password: ${{ secrets.INFLUX_ALPHA}}
+```

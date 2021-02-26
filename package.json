@@ -23,6 +23,7 @@
     "@actions/core": "^1.2.3",
     "@actions/exec": "^1.0.3",
     "@actions/github": "^4.0.0",
+    "influxdb-nodejs": "^3.1.0",
     "jest": "^25.1.0"
   },
   "devDependencies": {

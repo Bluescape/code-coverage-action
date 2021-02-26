@@ -1,5 +1,5 @@
 name: "Code Coverage Action"
-description: "Comments on a PR with a formatted markdown table displaying the code coverage"
+description: "Comments on a PR with a formatted markdown table displaying the code coverage and uploads coverage to a database"
 author: "Landon Martin"
 branding:
   icon: "message-square"
@@ -9,13 +9,46 @@ inputs:
     description: "GitHub Token"
     required: true
   coverage-command:
-    description: "Specify a command to run code coverage analysis"
+    description: "Specify a command to run code coverage analysis."
+    required: true
+  working-dir:
+    description: "Directory to execute coverage-command from"
     required: false
+  coverage-output:
+    description: "The path the coverage output file from the coverage command, relative the working-dir"
+    required: false
+  # Settings related to commenting on a PR
+  comment:
+    description: "Enable or disable commenting on pull requests."
+    required: false
+    default: true
   comment-title:
     description: "The title of the comment on the PR"
     required: false
-  working-dir:
-    description: "Directory to execute command from"
+  # Settings related to uploading coverage to InfluxDB
+  upload:
+    description: "Enable or disable uploading the results to a db"
+    required: false
+    default: false
+  upload-tag:
+    description: "A value to provide as a tag to the influx values"
+    required: false
+  influx-host:
+    description: "The url to the host which contains the db."
+    required: false
+  influx-db:
+    description: "The name of the db located on the host."
+    required: false
+    default: "unit-tests"
+  influx-series:
+    description: "The series on the db to upload to."
+    required: false
+    default: "jest"
+  influx-username:
+    description: "The username on the influxdb"
+    required: false
+  influx-password:
+    description: "The password on the influxdb relative to the influx-username"
     required: false
 runs:
   using: "node12"
