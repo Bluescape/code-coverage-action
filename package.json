@@ -1,6 +1,6 @@
 {
   "name": "@bluescape/code-coverage-action",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Comments on a PR with a formatted markdown table displaying the code coverage",
   "main": "src/index.js",
   "author": "Landon Martin",
