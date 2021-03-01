@@ -24,7 +24,7 @@ Reference `action.yml`
 ### Commenting on a Pull Request
 ```yaml
   - name: Comment Coverage on the PR
-    uses: bluescape/code-coverage-action@v0.0.3
+    uses: bluescape/code-coverage-action@v0.0.4
     with:
       token: ${{ secrets.GITHUB_TOKEN }}
       coverage-command: "npm run test -- --coverage"
@@ -37,7 +37,7 @@ This will navigate to `test/e2e/page_objects` and run the command `npm run test 
 ### Uploading to an InfluxDB
 ```yaml
   - name: Test PR Comment and Upload
-    uses: bluescape/code-coverage-action@v0.0.3
+    uses: bluescape/code-coverage-action@v0.0.4
     with:
       token: ${{ secrets.GITHUB_TOKEN }}
       coverage-command: 'npm run test -- --coverage'
