@@ -1,26 +1,22 @@
-name: Jest Check
+name: action-check
 
 on:
   pull_request:
     branches: [develop]
 
 jobs:
-  jest:
-    name: jest check
+  test_action:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
         node-version: [14.x]
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Test PR Comment and Upload
+      - name: Test PR with comment and upload
         uses: ./
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          comment-title: Test PR with comment and upload
           coverage-command: 'npm run test -- --coverage'
           coverage-output: "./coverage/coverage-summary.json"
           comment: true
@@ -29,3 +25,26 @@ jobs:
           influx-host: ${{ secrets.INFLUX_HOST }}
           influx-username: admin
           influx-password: ${{ secrets.INFLUX_ALPHA}}
+      - name: Test PR without defining upload
+        uses: ./
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          comment-title: Test PR without defining upload
+          coverage-command: 'npm run test -- --coverage'
+          coverage-output: "./coverage/coverage-summary.json"
+          comment: true
+      - name: Test PR without defining upload/comment
+        uses: ./
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          comment-title: Test PR without defining upload/comment
+          coverage-command: 'npm run test -- --coverage'
+          coverage-output: "./coverage/coverage-summary.json"
+      - name: Test PR with defining comment as false
+        uses: ./
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          comment-title: THIS SHOULD NOT BE HERE
+          coverage-command: 'npm run test -- --coverage'
+          coverage-output: "./coverage/coverage-summary.json"
+          comment: false

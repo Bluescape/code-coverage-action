@@ -20,7 +20,7 @@ const main = async () => {
   const fullReturn = await runCoverageCommand(covCommand, workingDir)
 
   // Comment on a PR
-  if (comment) {
+  if (comment === 'true') {
     try {
       const prNumber = getPrId()
       const codeCoverageTable = grabTableData(fullReturn)
@@ -40,7 +40,7 @@ const main = async () => {
   }
   // Upload to a DB
   const upload = core.getInput('upload')
-  if (upload) {
+  if (upload === 'true') {
     const uploadTag = core.getInput('upload-tag')
     if (!uploadTag) {
       throw Error('upload-tag is required if upload is true')
