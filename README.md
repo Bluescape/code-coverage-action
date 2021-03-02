@@ -1,10 +1,6 @@
 # bluescape/code-coverage-action
 This GitHub Action runs unit tests and comments on the PR with a markdown table of the code coverage.
 
-## Currently Supported Test Tools
-- `jest`
-- `mocha` using `nyc`
-
 ## Usage
 ### Pre-requisites
 A unit testing tool which can use instabul json-summary reporter: https://istanbul.js.org/docs/advanced/alternative-reporters/#json-summary
@@ -21,10 +17,10 @@ Create a workflow `.yml` file in your `.github/workflows` directory. An [example
 Reference `action.yml`
 
 ## Example Workflows
-### Commenting on a Pull Request
+### Commenting on a pull request
 ```yaml
   - name: Comment Coverage on the PR
-    uses: bluescape/code-coverage-action@v0.0.4
+    uses: bluescape/code-coverage-action@v0.0.5
     with:
       token: ${{ secrets.GITHUB_TOKEN }}
       coverage-command: "npm run test -- --coverage"
@@ -36,11 +32,25 @@ This will navigate to `test/e2e/page_objects` and run the command `npm run test 
 
 ### Uploading to an InfluxDB
 ```yaml
-  - name: Test PR Comment and Upload
-    uses: bluescape/code-coverage-action@v0.0.4
+  - name: Test PR and Upload
+    uses: bluescape/code-coverage-action@v0.0.5
     with:
       token: ${{ secrets.GITHUB_TOKEN }}
       coverage-command: 'npm run test -- --coverage'
+      coverage-output: "./coverage/coverage-summary.json" # This requires the json-summary coverage reporter
+      upload: true
+      upload-tag: "code-coverage-action"
+      influx-host: ${{ secrets.INFLUX_HOST }} # The url of the host where the influxdb is
+      influx-username: admin
+      influx-password: ${{ secrets.INFLUX_ALPHA}}
+```
+
+### Uploading an existing coverage report
+```yaml
+  - name: Upload already created coverage summary
+    uses: bluescape/code-coverage-action@v0.0.5
+    with:
+      token: ${{ secrets.GITHUB_TOKEN }}
       coverage-output: "./coverage/coverage-summary.json" # This requires the json-summary coverage reporter
       upload: true
       upload-tag: "code-coverage-action"
