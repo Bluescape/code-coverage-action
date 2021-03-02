@@ -10,28 +10,28 @@ inputs:
     required: true
   coverage-command:
     description: "Specify a command to run code coverage analysis."
-    required: true
+    required: false
   working-dir:
     description: "Directory to execute coverage-command from"
     required: false
   coverage-output:
-    description: "The path the coverage output file from the coverage command, relative the working-dir"
+    description: "The path the coverage output file from the coverage command, relative to the working-dir."
     required: false
   # Settings related to commenting on a PR
   comment:
-    description: "Enable or disable commenting on pull requests."
+    description: "Enable or disable commenting on pull requests. Only 'true' will enable."
     required: false
-    default: true
+    default: "false"
   comment-title:
     description: "The title of the comment on the PR"
     required: false
   # Settings related to uploading coverage to InfluxDB
   upload:
-    description: "Enable or disable uploading the results to a db"
+    description: "Enable or disable uploading the results to a db. Only 'true' will enable."
     required: false
-    default: false
+    default: "false"
   upload-tag:
-    description: "A value to provide as a tag to the influx values"
+    description: "A value to provide as a tag to the influx values."
     required: false
   influx-host:
     description: "The url to the host which contains the db."
@@ -45,10 +45,10 @@ inputs:
     required: false
     default: "jest"
   influx-username:
-    description: "The username on the influxdb"
+    description: "The username on the influxdb."
     required: false
   influx-password:
-    description: "The password on the influxdb relative to the influx-username"
+    description: "The password on the influxdb relative to the influx-username."
     required: false
 runs:
   using: "node12"

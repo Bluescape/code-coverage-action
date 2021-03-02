@@ -6,17 +6,17 @@ on:
 
 jobs:
   test_action:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         node-version: [14.x]
     steps:
       - uses: actions/checkout@v2
-      - name: Test PR with comment and upload
+      - name: Test PR with comment=true and upload=true
         uses: ./
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          comment-title: Test PR with comment and upload
+          comment-title: "Comment 1/2"
           coverage-command: 'npm run test -- --coverage'
           coverage-output: "./coverage/coverage-summary.json"
           comment: true
@@ -25,11 +25,11 @@ jobs:
           influx-host: ${{ secrets.INFLUX_HOST }}
           influx-username: admin
           influx-password: ${{ secrets.INFLUX_ALPHA}}
-      - name: Test PR without defining upload
+      - name: Test PR with comment=true and without defining upload
         uses: ./
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          comment-title: Test PR without defining upload
+          comment-title: Comment 2/2
           coverage-command: 'npm run test -- --coverage'
           coverage-output: "./coverage/coverage-summary.json"
           comment: true
@@ -37,14 +37,24 @@ jobs:
         uses: ./
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          comment-title: Test PR without defining upload/comment
+          comment-title: THIS SHOULD NOT BE HERE - Failed Test PR without defining upload/comment
           coverage-command: 'npm run test -- --coverage'
           coverage-output: "./coverage/coverage-summary.json"
       - name: Test PR with defining comment as false
         uses: ./
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          comment-title: THIS SHOULD NOT BE HERE
+          comment-title: THIS SHOULD NOT BE HERE - Failed Test PR with defining comment as false
           coverage-command: 'npm run test -- --coverage'
           coverage-output: "./coverage/coverage-summary.json"
           comment: false
+      - name: Test PR and upload without defining coverage-command
+        uses: ./
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          upload-tag: "code-coverage-action"
+          coverage-output: "./coverage/coverage-summary.json"
+          upload: true
+          influx-host: ${{ secrets.INFLUX_HOST }}
+          influx-username: admin
+          influx-password: ${{ secrets.INFLUX_ALPHA}}

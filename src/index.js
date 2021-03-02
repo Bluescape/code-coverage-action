@@ -1,6 +1,7 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
 const fs = require('fs')
+const path = require('path')
 
 const grabTableData = require('./libs/grabTableData')
 const getPrId = require('./libs/getPrId')
@@ -17,7 +18,12 @@ const main = async () => {
   // comment arguments
   const comment = core.getInput('comment')
 
-  const fullReturn = await runCoverageCommand(covCommand, workingDir)
+  let fullReturn
+  if (covCommand) {
+    fullReturn = await runCoverageCommand(covCommand, workingDir)
+  } else {
+    console.debug('coverage-command not defined, not running.')
+  }
 
   // Comment on a PR
   if (comment === 'true') {
@@ -58,7 +64,10 @@ const main = async () => {
     if (!influxdb.host) {
       throw Error('influx-host is required if upload is true')
     }
-    const coverageOutputPath = core.getInput('coverage-output')
+
+    const relativeCovOutputPath = core.getInput('coverage-output')
+    const coverageOutputPath = workingDir ? path.join(workingDir, relativeCovOutputPath) : relativeCovOutputPath
+
     let results
     if (fs.existsSync(coverageOutputPath)) {
       results = JSON.parse(fs.readFileSync(coverageOutputPath))
